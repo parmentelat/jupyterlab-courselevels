@@ -1,0 +1,14 @@
+/*
+    See the JupyterLab Developer Guide for useful CSS Patterns:
+
+    https://jupyterlab.readthedocs.io/en/stable/developer/css.html
+*/
+
+/* hide only the input of cells with the tag 'hide-input' */
+.cell-tag-hide-input .jp-Cell-inputWrapper .jp-Cell-inputArea {
+    display: none;
+}
+.cell-tag-hide-output .jp-Cell-outputWrapper .jp-Cell-outputArea {
+    display: none;
+}
+
