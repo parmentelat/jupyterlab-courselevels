@@ -3,7 +3,7 @@ requires = ["hatchling>=1.5.0", "jupyterlab>=4.0.0rc0,<5", "hatch-nodejs-version
 build-backend = "hatchling.build"
 
 [project]
-name = "jupyterlab_tpt"
+name = "jupyterlab_courselevels"
 readme = "README.md"
 license = { file = "LICENSE" }
 requires-python = ">=3.8"
@@ -33,24 +33,24 @@ source = "nodejs"
 fields = ["description", "authors", "urls"]
 
 [tool.hatch.build.targets.sdist]
-artifacts = ["jupyterlab_tpt/labextension"]
+artifacts = ["jupyterlab_courselevels/labextension"]
 exclude = [".github", "binder"]
 
 [tool.hatch.build.targets.wheel.shared-data]
-"jupyterlab_tpt/labextension" = "share/jupyter/labextensions/jupyterlab-tpt"
-"install.json" = "share/jupyter/labextensions/jupyterlab-tpt/install.json"
+"jupyterlab_courselevels/labextension" = "share/jupyter/labextensions/jupyterlab-courselevels"
+"install.json" = "share/jupyter/labextensions/jupyterlab-courselevels/install.json"
 
 [tool.hatch.build.hooks.version]
-path = "jupyterlab_tpt/_version.py"
+path = "jupyterlab_courselevels/_version.py"
 
 [tool.hatch.build.hooks.jupyter-builder]
 dependencies = ["hatch-jupyter-builder>=0.5"]
 build-function = "hatch_jupyter_builder.npm_builder"
 ensured-targets = [
-    "jupyterlab_tpt/labextension/static/style.js",
-    "jupyterlab_tpt/labextension/package.json",
+    "jupyterlab_courselevels/labextension/static/style.js",
+    "jupyterlab_courselevels/labextension/package.json",
 ]
-skip-if-exists = ["jupyterlab_tpt/labextension/static/style.js"]
+skip-if-exists = ["jupyterlab_courselevels/labextension/static/style.js"]
 
 [tool.hatch.build.hooks.jupyter-builder.build-kwargs]
 build_cmd = "build:prod"
@@ -60,7 +60,7 @@ npm = ["jlpm"]
 build_cmd = "install:extension"
 npm = ["jlpm"]
 source_dir = "src"
-build_dir = "jupyterlab_tpt/labextension"
+build_dir = "jupyterlab_courselevels/labextension"
 
 [tool.jupyter-releaser.options]
 version_cmd = "hatch version"

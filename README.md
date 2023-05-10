@@ -1,6 +1,6 @@
-# jupyterlab_tpt
+# jupyterlab_courselevels
 
-[![Github Actions Status](https://github.com/parmentelat/jupyterlab-tpt/workflows/Build/badge.svg)](https://github.com/parmentelat/jupyterlab-tpt/actions/workflows/build.yml)
+[![Github Actions Status](https://github.com/parmentelat/jupyterlab-courselevels/workflows/Build/badge.svg)](https://github.com/parmentelat/jupyterlab-courselevels/actions/workflows/build.yml)
 My custom tweaks for using JLAB
 
 ## Requirements
@@ -13,7 +13,7 @@ My custom tweaks for using JLAB
 To install the extension, execute:
 
 ```bash
-pip install jupyterlab_tpt
+pip install jupyterlab_courselevels
 ```
 
 ## Uninstall
@@ -21,7 +21,7 @@ pip install jupyterlab_tpt
 To remove the extension, execute:
 
 ```bash
-pip uninstall jupyterlab_tpt
+pip uninstall jupyterlab_courselevels
 ```
 
 ## misc keystrokes
@@ -77,7 +77,7 @@ The `jlpm` command is JupyterLab's pinned version of
 
 ```bash
 # Clone the repo to your local environment
-# Change directory to the jupyterlab_tpt directory
+# Change directory to the jupyterlab_courselevels directory
 # Install package in development mode
 pip install -e "."
 # Link your development version of the extension with JupyterLab
@@ -106,12 +106,12 @@ jupyter lab build --minimize=False
 ### Development uninstall
 
 ```bash
-pip uninstall jupyterlab_tpt
+pip uninstall jupyterlab_courselevels
 ```
 
 In development mode, you will also need to remove the symlink created by `jupyter labextension develop`
 command. To find its location, you can run `jupyter labextension list` to figure out where the `labextensions`
-folder is located. Then you can remove the symlink named `jupyterlab-tpt` within that folder.
+folder is located. Then you can remove the symlink named `jupyterlab-courselevels` within that folder.
 
 ### Packaging the extension
 

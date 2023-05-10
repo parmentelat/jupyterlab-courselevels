@@ -32,7 +32,7 @@ jobs:
         python -m pip install .[test]
 
         jupyter labextension list
-        jupyter labextension list 2>&1 | grep -ie "jupyterlab-tpt.*OK"
+        jupyter labextension list 2>&1 | grep -ie "jupyterlab-courselevels.*OK"
         python -m jupyterlab.browser_check
 
     - name: Package the extension
@@ -41,13 +41,13 @@ jobs:
 
         pip install build
         python -m build
-        pip uninstall -y "jupyterlab_tpt" jupyterlab
+        pip uninstall -y "jupyterlab_courselevels" jupyterlab
 
     - name: Upload extension packages
       uses: actions/upload-artifact@v3
       with:
         name: extension-artifacts
-        path: dist/jupyterlab_tpt*
+        path: dist/jupyterlab_courselevels*
         if-no-files-found: error
 
   test_isolated:
@@ -72,11 +72,11 @@ jobs:
         sudo rm -rf $(which node)
         sudo rm -rf $(which node)
 
-        pip install "jupyterlab~=4.0rc0" jupyterlab_tpt*.whl
+        pip install "jupyterlab~=4.0rc0" jupyterlab_courselevels*.whl
 
 
         jupyter labextension list
-        jupyter labextension list 2>&1 | grep -ie "jupyterlab-tpt.*OK"
+        jupyter labextension list 2>&1 | grep -ie "jupyterlab-courselevels.*OK"
         python -m jupyterlab.browser_check --no-chrome-test
 
 

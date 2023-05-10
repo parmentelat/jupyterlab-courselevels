@@ -1,5 +1,5 @@
 {
-  "name": "jupyterlab-tpt",
+  "name": "jupyterlab-courselevels",
   "version": "0.2.0",
   "description": "My custom tweaks for using JLAB",
   "keywords": [
@@ -7,9 +7,9 @@
     "jupyterlab",
     "jupyterlab-extension"
   ],
-  "homepage": "https://github.com/parmentelat/jupyterlab-tpt",
+  "homepage": "https://github.com/parmentelat/jupyterlab-courselevels",
   "bugs": {
-    "url": "https://github.com/parmentelat/jupyterlab-tpt/issues"
+    "url": "https://github.com/parmentelat/jupyterlab-courselevels/issues"
   },
   "license": "BSD-3-Clause",
   "author": {
@@ -26,7 +26,7 @@
   "style": "style/index.css",
   "repository": {
     "type": "git",
-    "url": "https://github.com/parmentelat/jupyterlab-tpt.git"
+    "url": "https://github.com/parmentelat/jupyterlab-courselevels.git"
   },
   "scripts": {
     "build": "jlpm build:lib && jlpm build:labextension:dev",
@@ -37,7 +37,7 @@
     "build:prod": "jlpm clean && jlpm build:lib:prod && jlpm build:labextension",
     "clean": "jlpm clean:lib",
     "clean:all": "jlpm clean:lib && jlpm clean:labextension && jlpm clean:lintcache",
-    "clean:labextension": "rimraf jupyterlab_tpt/labextension jupyterlab_tpt/_version.py",
+    "clean:labextension": "rimraf jupyterlab_courselevels/labextension jupyterlab_courselevels/_version.py",
     "clean:lib": "rimraf lib tsconfig.tsbuildinfo",
     "clean:lintcache": "rimraf .eslintcache .stylelintcache",
     "eslint": "jlpm eslint:check --fix",
@@ -93,6 +93,6 @@
   },
   "jupyterlab": {
     "extension": true,
-    "outputDir": "jupyterlab_tpt/labextension"
+    "outputDir": "jupyterlab_courselevels/labextension"
   }
 }

@@ -130,14 +130,14 @@ const make_text_and_insert_section = (notebook: Notebook, depth: number) => {
 
 
 /**
- * Initialization data for the jupyterlab-tpt extension.
+ * Initialization data for the jupyterlab-courselevels extension.
  */
 const plugin: JupyterFrontEndPlugin<void> = {
-  id: 'jupyterlab-tpt:plugin',
+  id: 'jupyterlab-courselevels:plugin',
   autoStart: true,
   requires: [ICommandPalette, INotebookTracker],
   activate: (app: JupyterFrontEnd, palette: ICommandPalette, notebookTracker: INotebookTracker) => {
-    console.log('JupyterLab extension jupyterlab-tpt is activating')
+    console.log('JupyterLab extension jupyterlab-courselevels is activating')
     // console.log('ICommandPalette', palette)
     // console.log('INotebookTracker', notebookTracker)
 
