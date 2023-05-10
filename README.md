@@ -1,12 +1,17 @@
 # jupyterlab_courselevels
 
 [![Github Actions Status](https://github.com/parmentelat/jupyterlab-courselevels/workflows/Build/badge.svg)](https://github.com/parmentelat/jupyterlab-courselevels/actions/workflows/build.yml)
-My custom tweaks for using JLAB
+JupyterLab extension to display cells in colors based on their intended audience level; the color codes follows the logic of ski tracks
+
+- green : basic - all students should know that
+- blue : intermediate - if you want to dig a little more
+- red : advanced - for the geeks
+
+in addition some cells may show up with a surrounding frame, to emphasize the course structure
 
 ## Requirements
 
 - JupyterLab >= 4.0.0
-- jupyterlab-myst
 
 ## Install
 
@@ -24,46 +29,31 @@ To remove the extension, execute:
 pip uninstall jupyterlab_courselevels
 ```
 
-## misc keystrokes
+## misc commands
 
-Remember that Alt = Option on the mac
+| command | 
+|:-:|
+| `courselevels:toggle-basic` |
+| `courselevels:toggle-intermediate` |
+| `courselevels:toggle-advanced` |
+| `courselevels:toggle-frame` |
+| `courselevels:clean-metadata` |
 
-| keystroke | command | what |
-|-:|:-:|:-|
-| Alt-Cmd-9 | `convenience:hide-input` | hide input on selected cells |
-| Ctrl-Alt-9 | `convenience:show-input` | show input on selected cells |
-| Alt-Cmd-8 | `convenience:hide-input-all-samples` | hide input on all code cells with `tools.sample_from` |
-| Ctrl-Alt-8 | `convenience:show-input-all-samples` | hide input on all code cells with `tools.sample_from` |
-| Ctrl-0 | `convenience:section-level-0` | remove section header (#s) |
-| Ctrl-1 | `convenience:section-level-1` | set as section 1 header |
-| Ctrl-2 |
-| Ctrl-3 |
-| Ctrl-4 | `convenience:section-level-4` | set as section 4 header |
-| Ctrl-e | `convenience:unrender-all-markdown` | unrender all markdown cells |
-| Ctrl-w | `notebook:render-all-markdown` | render all markdown cells |
-| u | `notebook:move-cell-up` |
-| d | `notebook:move-cell-down` |
+### persistence
 
-## `sync_cell_tags_as_css_classes`
+this is done by adding the following tags in each cell
 
-each cell has its widget (the DOM element) classes kept in sync in terms of the cell's tags;
-for example, after using 'Alt-Cmd-9', the current cell will have class `cell-tag-hide-input` added
+* `level_basic`
+* `level_intermediate`
+* `level_advanced`
+* `framed_cell`
 
-for the record, in nb-courselevels - i.e. in the classic notebook - we had set `data-tag-basic=true`; 
-it does not matter much if we don't follow the same convention here
+### rendering
 
-## courselevels
-
-still TODO
-
-| keystroke | command | what |
-|-:|:-:|:-|
-| ctrl-x | `courselevels:toggle-basic` |
-| ctrl-y | `courselevels:toggle-intermediate` |
-| ctrl-z | `courselevels:toggle-advanced` |
-| ???    | `courselevels:toggle-frame` |
-|||
-| ???    | remove-empty-tags |
+for the record, in nb-courselevels - i.e. in the classic notebook - we had added e.g.
+`data-tag-basic=true` in the DOM element; here we rely on the `jupyterlab-celltagsclasses`
+extension, which will instead set the `cell-tag-level_basic` class, but it does not
+matter that we don't use the same means here
 
 ## Development
 
@@ -116,24 +106,3 @@ folder is located. Then you can remove the symlink named `jupyterlab-courselevel
 ### Packaging the extension
 
 See [RELEASE](RELEASE.md)
-
-# My notes
-
-* on using signals
-  <https://github.com/jupyterlab/extension-examples/tree/master/signals>
-
-* a very useful example of arming callbacks on changes
-  // https://discourse.jupyter.org/t/how-to-get-output-model-for-a-given-cell-in-a-jupyterlab-extension/11342/6
-
-* waiting for a notebook context to be ready
-  ```js
-  notebookContext: DocumentRegistry.IContext<INotebookModel>
-  notebookContext.ready.then(() => {
-    /*
-     * The order of operations here is key. First, create a model that contains a log of
-     * executed cells and the state of the gather UI.
-     */
-    let notebookModel = notebookContext.model;
-    ...
-  })
-  ```
