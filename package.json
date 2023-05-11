@@ -58,7 +58,8 @@
     "@jupyterlab/application": "^4.0.0-beta.2",
     "@jupyterlab/apputils": "^4.0.0-beta.2",
     "@jupyterlab/notebook": "^4.0.0-beta.2",
-    "@lumino/widgets": "^2.0.1"
+    "@lumino/widgets": "^2.0.1",
+    "jupyterlab-celltagsclasses": "^0.2.0"
   },
   "devDependencies": {
     "@jupyterlab/builder": "^4.0.0-beta.0",

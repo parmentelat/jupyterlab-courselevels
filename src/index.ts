@@ -7,28 +7,16 @@
 
 import {
   JupyterFrontEnd,
-  JupyterFrontEndPlugin
+  JupyterFrontEndPlugin,
 } from '@jupyterlab/application'
 
 import { ICommandPalette } from '@jupyterlab/apputils'
 
-import {
-  INotebookTracker,
-  // Notebook,
-  // NotebookActions,
-} from '@jupyterlab/notebook'
+import { INotebookTracker } from '@jupyterlab/notebook'
 
-// import {
-//   CodeCell,
-//   MarkdownCell,
-//   Cell,
-// } from '@jupyterlab/cells'
+import { Cell } from '@jupyterlab/cells'
 
-//import { Widget } from '@lumino/widgets'
-
-// import {
-//   md_get, md_set, md_unset, md_insert, md_remove, /*md_toggle, */md_clean
-// } from './metadata' //from '@jupyterlab-celltagsclasses'
+import { md_has, md_insert, md_remove } from 'jupyterlab-celltagsclasses'
 
 
 /**
@@ -46,18 +34,107 @@ const plugin: JupyterFrontEndPlugin<void> = {
     // Cmd modifier is ignored on non-Mac platforms.
     // Alt is option on mac
 
-    // let command
+    const cell_toggle_level = (cell: Cell, level: string): void => {
+      switch (level) {
+        case 'basic':
+          if (md_has(cell, 'tags', 'level_basic')) {
+            md_remove(cell, 'tags', 'level_basic')
+          } else {
+            md_insert(cell, 'tags', 'level_basic')
+            md_remove(cell, 'tags', 'level_intermediate')
+            md_remove(cell, 'tags', 'level_advanced')
+          }
+          break
+        case 'intermediate':
+          if (md_has(cell, 'tags', 'level_intermediate')) {
+            md_remove(cell, 'tags', 'level_intermediate')
+          } else {
+            md_remove(cell, 'tags', 'level_basic')
+            md_insert(cell, 'tags', 'level_intermediate')
+            md_remove(cell, 'tags', 'level_advanced')
+          }
+          break
+        case 'advanced':
+          if (md_has(cell, 'tags', 'level_advanced')) {
+            md_remove(cell, 'tags', 'level_advanced')
+          } else {
+            md_remove(cell, 'tags', 'level_basic')
+            md_remove(cell, 'tags', 'level_intermediate')
+            md_insert(cell, 'tags', 'level_advanced')
+          }
+          break
+        default:
+          md_remove(cell, 'tags', 'level_basic')
+          md_remove(cell, 'tags', 'level_intermediate')
+          md_remove(cell, 'tags', 'level_advanced')
+      }
+    }
 
-    // command = 'courselevels:metadata-clean'
-    // app.commands.addCommand(command, {
-    //   label: `clean metadata for all selected cells`,
-    //   execute: () => apply_on_cells(notebookTracker, Scope.Multiple, (cell) => md_clean(cell, ''))
-    // })
-    // palette.addItem({ command, category: 'CourseLevels' })
-    // app.commands.addKeyBinding({ command, keys: ['Alt Cmd 7'], selector: '.jp-Notebook' })
+    const toggle_level = (level: string) => {
+      const notebook = notebookTracker.currentWidget?.content
+      if (notebook === undefined) { return }
+      const activeCell = notebook.activeCell
+      if (activeCell === null) { return }
+      cell_toggle_level(activeCell, level)
+    }
+
+    let command
+
+    for (const [level, key] of [
+      ['basic', 'Ctrl X'],
+      ['intermediate', 'Ctrl Y'],
+      ['advanced', 'Ctrl Z'],
+    ]) {
+      command = `courselevels:toggle-level-${level}`
+      app.commands.addCommand(command, {
+        label: `toggle ${level} level`,
+        execute: () => toggle_level(level)
+      })
+      palette.addItem({ command, category: 'CourseLevels' })
+      app.commands.addKeyBinding({ command, keys: [key], selector: '.jp-Notebook' })
+    }
+
+    const toggle_frame = () => {
+      const notebook = notebookTracker.currentWidget?.content
+      if (notebook === undefined) { return }
+      const activeCell = notebook.activeCell
+      if (activeCell === null) { return }
+      if (md_has(activeCell, 'tags', 'framed_cell')) {
+        md_remove(activeCell, 'tags', 'framed_cell')
+      } else {
+        md_insert(activeCell, 'tags', 'framed_cell')
+      }
+    }
 
 
-    // xxx
+    command = 'courselevels:toggle-frame'
+    app.commands.addCommand(command, {
+      label: 'toggle frame',
+      execute: () => toggle_frame()
+    })
+    palette.addItem({ command, category: 'CourseLevels' })
+    app.commands.addKeyBinding({ command, keys: ['Ctrl M'], selector: '.jp-Notebook' })
+
+    const toggle_licence = () => {
+      const notebook = notebookTracker.currentWidget?.content
+      if (notebook === undefined) { return }
+      const activeCell = notebook.activeCell
+      if (activeCell === null) { return }
+      if (md_has(activeCell, 'tags', 'licence')) {
+        md_remove(activeCell, 'tags', 'licence')
+      } else {
+        md_insert(activeCell, 'tags', 'licence')
+      }
+    }
+
+
+    command = 'courselevels:toggle-licence'
+    app.commands.addCommand(command, {
+      label: 'toggle licence',
+      execute: () => toggle_licence()
+    })
+    palette.addItem({ command, category: 'CourseLevels' })
+    app.commands.addKeyBinding({ command, keys: ['Ctrl L'], selector: '.jp-Notebook' })
   }
 }
 
