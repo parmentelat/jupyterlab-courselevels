@@ -16,9 +16,11 @@ import { ToolbarButton } from '@jupyterlab/apputils'
 
 import { md_has, md_insert, md_remove, md_toggle } from 'jupyterlab-celltagsclasses'
 import { Scope, apply_on_cells } from 'jupyterlab-celltagsclasses'
-/**
- * Initialization data for the jupyterlab-courselevels extension.
- */
+
+import { toggle_admonition } from './admonitions'
+
+
+
 const plugin: JupyterFrontEndPlugin<void> = {
   id: 'jupyterlab-courselevels:plugin',
   autoStart: true,
@@ -205,7 +207,35 @@ const plugin: JupyterFrontEndPlugin<void> = {
       }
     }
     app.docRegistry.addWidgetExtension('Notebook', new FrameButton())
+
+    // admonitions
+    for (const [admonition, key] of [
+      ['tip', 'Ctrl T'],
+      ['note', 'Ctrl N'],
+      ['attention', 'Ctrl A'],
+      ['caution', 'Ctrl C'],
+      ['danger', 'Ctrl D'],
+      ['error', 'Ctrl E'],
+      ['hint', 'Ctrl H'],
+      ['important', 'Ctrl I'],
+      ['seealso', 'Ctrl S'],
+      ['warning', 'Ctrl W'],
+    ]) {
+
+      command = `courselevels:toggle-admonition-${admonition}`
+      app.commands.addCommand(command, {
+        label: `toggle admonition ${admonition}`,
+        execute: () => {
+          const notebook = notebookTracker.currentWidget?.content
+          if (notebook === undefined) { return }
+          toggle_admonition(notebook, admonition)
+        }
+      })
+      palette.addItem({ command, category: 'CourseLevels' })
+      app.commands.addKeyBinding({ command, keys: ['Ctrl \\', key], selector: '.jp-Notebook' })
+    }
   }
+
 }
 
 export default plugin
