@@ -5,10 +5,7 @@
 
 /* eslint-disable prettier/prettier */
 
-import {
-  JupyterFrontEnd,
-  JupyterFrontEndPlugin,
-} from '@jupyterlab/application'
+import { JupyterFrontEnd, JupyterFrontEndPlugin, } from '@jupyterlab/application'
 import { ICommandPalette } from '@jupyterlab/apputils'
 import { INotebookTracker, NotebookPanel, INotebookModel } from '@jupyterlab/notebook'
 import { Cell } from '@jupyterlab/cells'
@@ -17,8 +14,8 @@ import { IDisposable, DisposableDelegate } from '@lumino/disposable'
 import { DocumentRegistry } from '@jupyterlab/docregistry'
 import { ToolbarButton } from '@jupyterlab/apputils'
 
-import { md_has, md_insert, md_remove } from 'jupyterlab-celltagsclasses'
-
+import { md_has, md_insert, md_remove, md_toggle } from 'jupyterlab-celltagsclasses'
+import { Scope, apply_on_cells } from 'jupyterlab-celltagsclasses'
 /**
  * Initialization data for the jupyterlab-courselevels extension.
  */
@@ -27,7 +24,7 @@ const plugin: JupyterFrontEndPlugin<void> = {
   autoStart: true,
   requires: [ICommandPalette, INotebookTracker],
   activate: (app: JupyterFrontEnd, palette: ICommandPalette, notebookTracker: INotebookTracker) => {
-    console.log('JupyterLab extension jupyterlab-courselevels is activating')
+    console.log('extension jupyterlab-courselevels is activating')
     // https://lumino.readthedocs.io/en/1.x/api/commands/interfaces/commandregistry.ikeybindingoptions.html
     // The supported modifiers are: Accel, Alt, Cmd, Ctrl, and Shift. The Accel
     // modifier is translated to Cmd on Mac and Ctrl on all other platforms. The
@@ -71,11 +68,9 @@ const plugin: JupyterFrontEndPlugin<void> = {
     }
 
     const toggle_level = (level: string) => {
-      const notebook = notebookTracker.currentWidget?.content
-      if (notebook === undefined) { return }
-      const activeCell = notebook.activeCell
-      if (activeCell === null) { return }
-      cell_toggle_level(activeCell, level)
+      apply_on_cells(notebookTracker, Scope.Active, (cell: Cell) => {
+        cell_toggle_level(cell, level)
+      })
     }
 
     let command
@@ -96,15 +91,9 @@ const plugin: JupyterFrontEndPlugin<void> = {
 
 
     const toggle_frame = () => {
-      const notebook = notebookTracker.currentWidget?.content
-      if (notebook === undefined) { return }
-      const activeCell = notebook.activeCell
-      if (activeCell === null) { return }
-      if (md_has(activeCell, 'tags', 'framed_cell')) {
-        md_remove(activeCell, 'tags', 'framed_cell')
-      } else {
-        md_insert(activeCell, 'tags', 'framed_cell')
-      }
+      apply_on_cells(notebookTracker, Scope.Active, (cell: Cell) => {
+        md_toggle(cell, 'tags', 'framed_cell')
+      })
     }
 
     command = 'courselevels:toggle-frame'
@@ -118,15 +107,9 @@ const plugin: JupyterFrontEndPlugin<void> = {
 
 
     const toggle_licence = () => {
-      const notebook = notebookTracker.currentWidget?.content
-      if (notebook === undefined) { return }
-      const activeCell = notebook.activeCell
-      if (activeCell === null) { return }
-      if (md_has(activeCell, 'tags', 'licence')) {
-        md_remove(activeCell, 'tags', 'licence')
-      } else {
-        md_insert(activeCell, 'tags', 'licence')
-      }
+      apply_on_cells(notebookTracker, Scope.Active, (cell: Cell) => {
+        md_toggle(cell, 'tags', 'licence')
+      })
     }
 
     command = 'courselevels:toggle-licence'
@@ -139,9 +122,17 @@ const plugin: JupyterFrontEndPlugin<void> = {
 
     // the buttons in the toolbar
 
-    // compute where to insert them
-    let spacer = panel.toolbar.children.find((item) => item.className === 'jp-Toolbar-spacer')
-    let index = panel.toolbar.children.indexOf(spacer) + 1
+    const find_spacer = (panel: NotebookPanel): number => {
+      let index = 0
+      for (const child of panel.toolbar.children()) {
+        if (child.node.classList.contains('jp-Toolbar-spacer')) {
+          return index
+        } else {
+          index += 1
+        }
+      }
+      return 0
+    }
 
     class BasicButton implements DocumentRegistry.IWidgetExtension<NotebookPanel, INotebookModel> {
       createNew(panel: NotebookPanel, context: DocumentRegistry.IContext<INotebookModel>): IDisposable {
@@ -151,8 +142,9 @@ const plugin: JupyterFrontEndPlugin<void> = {
           onClick: () => toggle_level('basic'),
           tooltip: 'Toggle basic level',
         })
-        console.log(panel.toolbar)
-        panel.toolbar.insertItem(index++, 'basicLevel', button)
+        // compute where to insert it
+        const index = find_spacer(panel)
+        panel.toolbar.insertItem(index, 'basicLevel', button)
         return new DisposableDelegate(() => {
           button.dispose()
         })
@@ -168,7 +160,9 @@ const plugin: JupyterFrontEndPlugin<void> = {
           onClick: () => toggle_level('intermediate'),
           tooltip: 'Toggle intermediate level',
         })
-        panel.toolbar.insertItem(index++, 'intermediateLevel', button)
+        // compute where to insert it
+        const index = find_spacer(panel)
+        panel.toolbar.insertItem(index, 'intermediateLevel', button)
         return new DisposableDelegate(() => {
           button.dispose()
         })
@@ -184,7 +178,9 @@ const plugin: JupyterFrontEndPlugin<void> = {
           onClick: () => toggle_level('advanced'),
           tooltip: 'Toggle advanced level',
         })
-        panel.toolbar.insertItem(index++, 'advancedLevel', button)
+        // compute where to insert it
+        const index = find_spacer(panel)
+        panel.toolbar.insertItem(index, 'advancedLevel', button)
         return new DisposableDelegate(() => {
           button.dispose()
         })
@@ -200,7 +196,9 @@ const plugin: JupyterFrontEndPlugin<void> = {
           onClick: () => toggle_frame(),
           tooltip: 'Toggle frame around cell',
         })
-        panel.toolbar.insertItem(index++, 'frameLevel', button)
+        // compute where to insert it
+        const index = find_spacer(panel)
+        panel.toolbar.insertItem(index, 'frameLevel', button)
         return new DisposableDelegate(() => {
           button.dispose()
         })
