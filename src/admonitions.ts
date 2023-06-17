@@ -18,7 +18,7 @@ export const toggle_admonition = (notebook: Notebook, admonition: string): void 
     cell_source = cell_source.slice(0, -1)
   }
   // does it start with an admonition?
-  const turning_off = (cell_source.startsWith(':::') || cell_source.startsWith('```'))
+  const turning_off = (cell_source.startsWith(':::') || cell_source.startsWith('````'))
 
   console.log('turning_off', turning_off)
 
@@ -40,14 +40,15 @@ export const toggle_admonition = (notebook: Notebook, admonition: string): void 
       tidy(
         cell_source
           .replace(RegExp(`^::: *{[a-zA-Z]+}`), '')
-          .replace(RegExp(`^\`\`\` *{[a-zA-Z]+}`), '')
-          .replace(RegExp('```.*$'), '')
-          .replace(RegExp(':::.*$'), '')
+          .replace(RegExp(`^\`\`\`\` *{[a-zA-Z]+}`), '')
+          // .replace(RegExp('````.*$'), '')
+          // .replace(RegExp('```.*$'), '')
+          // .replace(RegExp(':::.*$'), '')
       )
     )
   } else {
     model.sharedModel.setSource(
-      `\`\`\`{${admonition}}\n${tidy(cell_source)}\n\`\`\``
+      `\`\`\`\`{${admonition}}\n${tidy(cell_source)}\n\`\`\`\``
     )
   }
 }
