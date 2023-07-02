@@ -1,6 +1,6 @@
 {
     "name": "jupyterlab-courselevels",
-    "version": "0.4.2",
+    "version": "0.5.0",
     "description": "Jlab extension for showing course levels and structure",
     "keywords": [
         "jupyter",
