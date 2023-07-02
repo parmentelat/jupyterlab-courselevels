@@ -2,6 +2,8 @@
 
 import { Notebook, NotebookActions, } from '@jupyterlab/notebook'
 
+FENCE = '````'
+
 /* works on the active cell */
 export const toggle_admonition = (notebook: Notebook, admonition: string): void => {
 
@@ -18,18 +20,18 @@ export const toggle_admonition = (notebook: Notebook, admonition: string): void 
     cell_source = cell_source.slice(0, -1)
   }
   // does it start with an admonition?
-  const turning_off = (cell_source.startsWith(':::') || cell_source.startsWith('````'))
+  const turning_off = cell_source.startsWith(FENCE)
 
-  console.log('turning_off', turning_off)
+  console.debug('admonition: turning_off', turning_off)
 
   // a function that removes any initial white line, and any trailing white line
   // a line is considered white if it is empty or only contains whitespace
   const tidy = (dirty: string): string => {
     const lines = dirty.split('\n')
-    while (lines[0].match(/^\s*$/)) {
+    while (lines.length !=0 && lines[0].match(/^\s*$/)) {
       lines.shift()
     }
-    while (lines[lines.length - 1].match(/^\s*$/)) {
+    while (lines.length !=0 && lines[lines.length - 1].match(/^\s*$/)) {
       lines.pop()
     }
     return lines.join('\n')
@@ -39,16 +41,12 @@ export const toggle_admonition = (notebook: Notebook, admonition: string): void 
     model.sharedModel.setSource(
       tidy(
         cell_source
-          .replace(RegExp(`^::: *{[a-zA-Z]+}`), '')
-          .replace(RegExp(`^\`\`\`\` *{[a-zA-Z]+}`), '')
-          // .replace(RegExp('````.*$'), '')
-          // .replace(RegExp('```.*$'), '')
-          // .replace(RegExp(':::.*$'), '')
+          .replace(RegExp(`^{FENCE} *{[a-zA-Z]+}`), '')
       )
     )
   } else {
     model.sharedModel.setSource(
-      `\`\`\`\`{${admonition}}\n${tidy(cell_source)}\n\`\`\`\``
+      `${FENCE}{${admonition}}\n${tidy(cell_source)}\n${FENCE}`
     )
   }
 }
