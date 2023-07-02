@@ -1,5 +1,5 @@
 # Changelog
 
-<!-- <START NEW CHANGELOG ENTRY> -->
+## 0.4.2 2023 Jul 2
 
-<!-- <END NEW CHANGELOG ENTRY> -->
+* initial release
