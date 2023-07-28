@@ -2,7 +2,7 @@
 
 import { Notebook, NotebookActions, } from '@jupyterlab/notebook'
 
-FENCE = '````'
+const FENCE = '````'
 
 /* works on the active cell */
 export const toggle_admonition = (notebook: Notebook, admonition: string): void => {
@@ -37,16 +37,16 @@ export const toggle_admonition = (notebook: Notebook, admonition: string): void 
     return lines.join('\n')
   }
 
+  let new_source: string
   if (turning_off) {
-    model.sharedModel.setSource(
-      tidy(
+    new_source = tidy(
         cell_source
-          .replace(RegExp(`^{FENCE} *{[a-zA-Z]+}`), '')
-      )
+        .replace(RegExp(`^${FENCE} *{[a-zA-Z]+}`), '')
+        .replace(RegExp(`\n${FENCE}$`), '')
     )
   } else {
-    model.sharedModel.setSource(
-      `${FENCE}{${admonition}}\n${tidy(cell_source)}\n${FENCE}`
-    )
+    new_source = `${FENCE}{${admonition}}\n${tidy(cell_source)}\n${FENCE}`
   }
+
+  model.sharedModel.setSource(new_source)
 }

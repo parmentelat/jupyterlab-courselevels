@@ -220,6 +220,7 @@ const plugin: JupyterFrontEndPlugin<void> = {
       ['important', 'Ctrl I'],
       ['seealso', 'Ctrl S'],
       ['warning', 'Ctrl W'],
+      ['admonition', 'Ctrl M'],
     ]) {
 
       command = `courselevels:toggle-admonition-${admonition}`
