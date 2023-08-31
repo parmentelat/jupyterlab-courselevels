@@ -31,13 +31,29 @@ pip uninstall jupyterlab_courselevels
 
 ## misc commands
 
-| command | 
-|:-:|
-| `courselevels:toggle-basic` |
-| `courselevels:toggle-intermediate` |
-| `courselevels:toggle-advanced` |
-| `courselevels:toggle-frame` |
-| `courselevels:clean-metadata` |
+| command | keybinding |
+|:-:|:-:|
+| `courselevels:toggle-basic` | `Ctrl-\ Ctrl-X` |
+| `courselevels:toggle-intermediate` | `Ctrl-\ Ctrl-Y` |
+| `courselevels:toggle-advanced` | `Ctrl-\ Ctrl-Z` |
+| `courselevels:toggle-frame` | `Ctrl-\ Ctrl-M` |
+| `courselevels:toggle-licence` | `Ctrl-\ Ctrl-L` |
+
+as well as for adding/removing an admonition around a cell
+
+| command | keybinding |
+|:-:|:-:|
+| `courselevels:toggle-admonition` | `Ctrl-\ Ctrl-A` |
+| `courselevels:toggle-admonition-tip` | `Ctrl-\ Ctrl-T` |
+| `courselevels:toggle-admonition-note` | `Ctrl-\ Ctrl-N` |
+| `courselevels:toggle-attention` | |
+| `courselevels:toggle-caution` | |
+| `courselevels:toggle-danger` | |
+| `courselevels:toggle-error` | |
+| `courselevels:toggle-hint` | |
+| `courselevels:toggle-important` | |
+| `courselevels:toggle-seealso` | |
+| `courselevels:toggle-warning` | |
 
 ### persistence
 

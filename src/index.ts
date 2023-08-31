@@ -88,7 +88,7 @@ const plugin: JupyterFrontEndPlugin<void> = {
         execute: () => toggle_level(level)
       })
       palette.addItem({ command, category: 'CourseLevels' })
-      app.commands.addKeyBinding({ command, keys: [key], selector: '.jp-Notebook' })
+      app.commands.addKeyBinding({ command, keys: ['Ctrl \\', key], selector: '.jp-Notebook' })
     }
 
 
@@ -104,7 +104,7 @@ const plugin: JupyterFrontEndPlugin<void> = {
       execute: () => toggle_frame()
     })
     palette.addItem({ command, category: 'CourseLevels' })
-    app.commands.addKeyBinding({ command, keys: ['Ctrl M'], selector: '.jp-Notebook' })
+    app.commands.addKeyBinding({ command, keys: ['Ctrl \\', 'Ctrl M'], selector: '.jp-Notebook' })
 
 
 
@@ -120,7 +120,7 @@ const plugin: JupyterFrontEndPlugin<void> = {
       execute: () => toggle_licence()
     })
     palette.addItem({ command, category: 'CourseLevels' })
-    app.commands.addKeyBinding({ command, keys: ['Ctrl L'], selector: '.jp-Notebook' })
+    app.commands.addKeyBinding({ command, keys: ['Ctrl \\', 'Ctrl L'], selector: '.jp-Notebook' })
 
     // the buttons in the toolbar
 
@@ -209,23 +209,29 @@ const plugin: JupyterFrontEndPlugin<void> = {
     app.docRegistry.addWidgetExtension('Notebook', new FrameButton())
 
     // admonitions
-    for (const [admonition, key] of [
+    for (const [name, key] of [
+      ['admonition', 'Ctrl A'],
       ['tip', 'Ctrl T'],
       ['note', 'Ctrl N'],
-      ['attention', 'Ctrl A'],
-      ['caution', 'Ctrl C'],
-      ['danger', 'Ctrl D'],
-      ['error', 'Ctrl E'],
-      ['hint', 'Ctrl H'],
-      ['important', 'Ctrl I'],
-      ['seealso', 'Ctrl S'],
-      ['warning', 'Ctrl W'],
-      ['admonition', 'Ctrl M'],
+      ['attention', null],
+      ['caution', null],
+      ['danger', null],
+      ['error', null],
+      ['hint', null],
+      ['important', null],
+      ['seealso', null],
+      ['warning', null],
     ]) {
-
-      command = `courselevels:toggle-admonition-${admonition}`
+      // need to cast because name is typed as string | null ?!?
+      const admonition = name as string
+      command = 'courselevels:toggle-admonition'
+      let label = 'toggle admonition'
+      if (admonition !== 'admonition') {
+        command += `-${admonition}`
+        label += ` ${admonition}`
+      }
       app.commands.addCommand(command, {
-        label: `toggle admonition ${admonition}`,
+        label,
         execute: () => {
           const notebook = notebookTracker.currentWidget?.content
           if (notebook === undefined) { return }
@@ -233,7 +239,9 @@ const plugin: JupyterFrontEndPlugin<void> = {
         }
       })
       palette.addItem({ command, category: 'CourseLevels' })
-      app.commands.addKeyBinding({ command, keys: ['Ctrl \\', key], selector: '.jp-Notebook' })
+      if (key !== null) {
+        app.commands.addKeyBinding({ command, keys: ['Ctrl \\', key], selector: '.jp-Notebook' })
+      }
     }
   }
 
