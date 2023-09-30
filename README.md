@@ -38,8 +38,8 @@ pip uninstall jupyterlab_courselevels
 | `courselevels:toggle-advanced` | `Ctrl-\ Ctrl-Z` |
 | `courselevels:toggle-frame` | `Ctrl-\ Ctrl-M` |
 | `courselevels:toggle-licence` | `Ctrl-\ Ctrl-L` |
- | `convenience:metadata-clean-selected` | `Alt-Cmd-7` | clean metadata on selected cells |
-| `convenience:metadata-clean-all` | `Ctrl-Alt-7` | clean metadata on all cells |
+| `courselevels:metadata-clean-selected` | `Alt-Cmd-7` | clean metadata on selected cells |
+| `courselevels:metadata-clean-all` | `Ctrl-Alt-7` | clean metadata on all cells |
 
 as well as for adding/removing an admonition around a cell
 

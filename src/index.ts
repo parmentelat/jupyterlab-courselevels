@@ -151,21 +151,21 @@ const plugin: JupyterFrontEndPlugin<void> = {
     app.commands.addKeyBinding({ command, keys: ['Ctrl \\', 'Ctrl L'], selector: '.jp-Notebook' })
 
 
-    command = 'convenience:metadata-clean-selected'
+    command = 'courselevels:metadata-clean-selected'
     app.commands.addCommand(command, {
       label: `clean metadata for all selected cells`,
       execute: () => apply_on_cells(notebookTracker, Scope.Multiple, clean_cell_metadata)
     })
-    palette.addItem({ command, category: 'Convenience' })
+    palette.addItem({ command, category: 'courselevels' })
     app.commands.addKeyBinding({ command, keys: ['Alt Cmd 7'], selector: '.jp-Notebook' })
 
 
-    command = 'convenience:metadata-clean-all'
+    command = 'courselevels:metadata-clean-all'
     app.commands.addCommand(command, {
       label: `clean metadata for all cells`,
       execute: () => apply_on_cells(notebookTracker, Scope.All, clean_cell_metadata)
     })
-    palette.addItem({ command, category: 'Convenience' })
+    palette.addItem({ command, category: 'courselevels' })
     app.commands.addKeyBinding({ command, keys: ['Ctrl Alt 7'], selector: '.jp-Notebook' })
 
 
