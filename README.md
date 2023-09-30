@@ -31,13 +31,15 @@ pip uninstall jupyterlab_courselevels
 
 ## misc commands
 
-| command | keybinding |
-|:-:|:-:|
+| command | keybinding | comment |
+|:-:|:-:|:-|
 | `courselevels:toggle-basic` | `Ctrl-\ Ctrl-X` |
 | `courselevels:toggle-intermediate` | `Ctrl-\ Ctrl-Y` |
 | `courselevels:toggle-advanced` | `Ctrl-\ Ctrl-Z` |
 | `courselevels:toggle-frame` | `Ctrl-\ Ctrl-M` |
 | `courselevels:toggle-licence` | `Ctrl-\ Ctrl-L` |
+ | `convenience:metadata-clean-selected` | `Alt-Cmd-7` | clean metadata on selected cells |
+| `convenience:metadata-clean-all` | `Ctrl-Alt-7` | clean metadata on all cells |
 
 as well as for adding/removing an admonition around a cell
 

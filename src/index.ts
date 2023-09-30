@@ -14,10 +14,38 @@ import { IDisposable, DisposableDelegate } from '@lumino/disposable'
 import { DocumentRegistry } from '@jupyterlab/docregistry'
 import { ToolbarButton } from '@jupyterlab/apputils'
 
-import { md_has, md_insert, md_remove, md_toggle } from 'jupyterlab-celltagsclasses'
+import { md_get, md_unset, md_has, md_insert, md_remove, md_toggle } from 'jupyterlab-celltagsclasses'
 import { Scope, apply_on_cells } from 'jupyterlab-celltagsclasses'
 
 import { toggle_admonition } from './admonitions'
+
+// md_clean may be broken
+// import { md_set, , md_insert, md_remove } from 'jupyterlab-celltagsclasses'
+
+
+const clean_cell_metadata = (cell: Cell) => {
+  console.log("Cleaning metadata for cell", cell)
+  const editable = cell.model.getMetadata('editable')
+  if (editable === true) {
+    md_unset(cell, 'editable')
+  }
+  const tags = cell.model.getMetadata('tags')
+  if (tags?.length === 0) {
+    md_unset(cell, 'tags')
+  }
+  const slide_type = md_get(cell, 'slideshow.slide_type')
+  if (slide_type === '') {
+    md_unset(cell, 'slideshow.slide_type')
+  }
+  const slideshow = md_get(cell, 'slideshow')
+  if ((slideshow !== undefined) && (JSON.stringify(slideshow) == '{}')) {
+    md_unset(cell, 'slideshow')
+  }
+  const user_expressions = md_get(cell, 'user_expressions')
+  if (user_expressions?.length === 0) {
+    md_unset(cell, 'user_expressions')
+  }
+}
 
 
 
@@ -122,7 +150,26 @@ const plugin: JupyterFrontEndPlugin<void> = {
     palette.addItem({ command, category: 'CourseLevels' })
     app.commands.addKeyBinding({ command, keys: ['Ctrl \\', 'Ctrl L'], selector: '.jp-Notebook' })
 
-    // the buttons in the toolbar
+
+    command = 'convenience:metadata-clean-selected'
+    app.commands.addCommand(command, {
+      label: `clean metadata for all selected cells`,
+      execute: () => apply_on_cells(notebookTracker, Scope.Multiple, clean_cell_metadata)
+    })
+    palette.addItem({ command, category: 'Convenience' })
+    app.commands.addKeyBinding({ command, keys: ['Alt Cmd 7'], selector: '.jp-Notebook' })
+
+
+    command = 'convenience:metadata-clean-all'
+    app.commands.addCommand(command, {
+      label: `clean metadata for all cells`,
+      execute: () => apply_on_cells(notebookTracker, Scope.All, clean_cell_metadata)
+    })
+    palette.addItem({ command, category: 'Convenience' })
+    app.commands.addKeyBinding({ command, keys: ['Ctrl Alt 7'], selector: '.jp-Notebook' })
+
+
+// the buttons in the toolbar
 
     const find_spacer = (panel: NotebookPanel): number => {
       let index = 0
