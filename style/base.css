@@ -4,48 +4,53 @@
     https://jupyterlab.readthedocs.io/en/stable/developer/css.html
 */
 
+/* stylelint-disable */
+
 .cell-tag-level_basic {
-    background-color: #c7e8c7 !important;
-    border: 1px solid #040;
-    border-radius: 10px;
-    margin-bottom: 6px;
+  background-color: #c7e8c7 !important;
+  border: 1px solid #040;
+  border-radius: 10px;
+  margin-bottom: 6px;
 }
 
 .cell-tag-level_intermediate {
-    background-color: #cfcfe9 !important;
-    border: 1px solid #004;
-    border-radius: 10px;
-    margin-bottom: 6px;
+  background-color: #cfcfe9 !important;
+  border: 1px solid #004;
+  border-radius: 10px;
+  margin-bottom: 6px;
 }
 
 .cell-tag-level_advanced {
-    background-color: #f7d1d1 !important;
-    border: 1px solid #400;
-    border-radius: 10px;
-    margin-bottom: 6px;
+  background-color: #f7d1d1 !important;
+  border: 1px solid #400;
+  border-radius: 10px;
+  margin-bottom: 6px;
 }
 
 .cell-tag-framed_cell {
-    border: 3px ridge #400;
-    border-radius: 10px;
-    margin-bottom: 6px;
+  border: 3px ridge #400;
+  border-radius: 10px;
+  margin-bottom: 6px;
 }
 
 .cell-tag-licence * {
-    color: #a0a0a080;
+  color: #a0a0a080;
 }
 
 .courselevels-button {
-    color: rgb(68, 36, 127);
-    background-color: rgb(229, 228, 228) !important;
-    border: 1px solid #400 !important;
-    border-radius: 3px;
+  color: rgb(68, 36, 127);
+  background-color: rgb(229, 228, 228) !important;
+  border: 1px solid #400 !important;
+  border-radius: 3px;
 }
 
 /* hide only the input of cells with the tag 'hide-input' */
 .cell-tag-hide-input .jp-Cell-inputWrapper .jp-Cell-inputArea {
-    display: none;
+  display: none;
 }
+
 .cell-tag-hide-output .jp-Cell-outputWrapper .jp-Cell-outputArea {
-    display: none;
+  display: none;
 }
+
+/* stylelint-enable */

@@ -5,9 +5,13 @@
 
 /* eslint-disable prettier/prettier */
 
-import { JupyterFrontEnd, JupyterFrontEndPlugin, } from '@jupyterlab/application'
+import { JupyterFrontEnd, JupyterFrontEndPlugin } from '@jupyterlab/application'
 import { ICommandPalette } from '@jupyterlab/apputils'
-import { INotebookTracker, NotebookPanel, INotebookModel } from '@jupyterlab/notebook'
+import {
+  INotebookTracker,
+  NotebookPanel,
+  INotebookModel
+} from '@jupyterlab/notebook'
 import { Cell } from '@jupyterlab/cells'
 import { ISettingRegistry } from '@jupyterlab/settingregistry'
 
@@ -15,18 +19,22 @@ import { IDisposable, DisposableDelegate } from '@lumino/disposable'
 import { DocumentRegistry } from '@jupyterlab/docregistry'
 import { ToolbarButton } from '@jupyterlab/apputils'
 
-import { md_get, md_unset, md_has, md_insert, md_remove, md_toggle } from 'jupyterlab-celltagsclasses'
+import {
+  md_get,
+  md_unset,
+  md_has,
+  md_insert,
+  md_remove,
+  md_toggle
+} from 'jupyterlab-celltagsclasses'
 import { Scope, apply_on_cells } from 'jupyterlab-celltagsclasses'
 
 import { toggle_admonition } from './admonitions'
 
-
 const PLUGIN_ID = 'jupyterlab-courselevels:plugin'
-
 
 // md_clean may be broken
 // import { md_set, , md_insert, md_remove } from 'jupyterlab-celltagsclasses'
-
 
 const clean_cell_metadata = (cell: Cell) => {
   console.log('Cleaning metadata for cell', cell)
@@ -43,7 +51,7 @@ const clean_cell_metadata = (cell: Cell) => {
     md_unset(cell, 'slideshow.slide_type')
   }
   const slideshow = md_get(cell, 'slideshow')
-  if ((slideshow !== undefined) && (JSON.stringify(slideshow) === '{}')) {
+  if (slideshow !== undefined && JSON.stringify(slideshow) === '{}') {
     md_unset(cell, 'slideshow')
   }
   const user_expressions = md_get(cell, 'user_expressions')
@@ -51,8 +59,6 @@ const clean_cell_metadata = (cell: Cell) => {
     md_unset(cell, 'user_expressions')
   }
 }
-
-
 
 const plugin: JupyterFrontEndPlugin<void> = {
   id: PLUGIN_ID,
@@ -62,7 +68,8 @@ const plugin: JupyterFrontEndPlugin<void> = {
     app: JupyterFrontEnd,
     palette: ICommandPalette,
     notebookTracker: INotebookTracker,
-    settingRegistry: ISettingRegistry) => {
+    settingRegistry: ISettingRegistry
+  ) => {
     console.log('extension jupyterlab-courselevels is activating')
     // https://lumino.readthedocs.io/en/1.x/api/commands/interfaces/commandregistry.ikeybindingoptions.html
     // The supported modifiers are: Accel, Alt, Cmd, Ctrl, and Shift. The Accel
@@ -119,7 +126,7 @@ const plugin: JupyterFrontEndPlugin<void> = {
     for (const [level, key] of [
       ['basic', 'Ctrl X'],
       ['intermediate', 'Ctrl Y'],
-      ['advanced', 'Ctrl Z'],
+      ['advanced', 'Ctrl Z']
     ]) {
       command = `courselevels:toggle-level-${level}`
       app.commands.addCommand(command, {
@@ -127,9 +134,12 @@ const plugin: JupyterFrontEndPlugin<void> = {
         execute: () => toggle_level(level)
       })
       palette.addItem({ command, category: 'CourseLevels' })
-      app.commands.addKeyBinding({ command, keys: ['Ctrl \\', key], selector: '.jp-Notebook' })
+      app.commands.addKeyBinding({
+        command,
+        keys: ['Ctrl \\', key],
+        selector: '.jp-Notebook'
+      })
     }
-
 
     const toggle_frame = () => {
       apply_on_cells(notebookTracker, Scope.Active, (cell: Cell) => {
@@ -143,9 +153,11 @@ const plugin: JupyterFrontEndPlugin<void> = {
       execute: () => toggle_frame()
     })
     palette.addItem({ command, category: 'CourseLevels' })
-    app.commands.addKeyBinding({ command, keys: ['Ctrl \\', 'Ctrl M'], selector: '.jp-Notebook' })
-
-
+    app.commands.addKeyBinding({
+      command,
+      keys: ['Ctrl \\', 'Ctrl M'],
+      selector: '.jp-Notebook'
+    })
 
     const toggle_licence = () => {
       apply_on_cells(notebookTracker, Scope.Active, (cell: Cell) => {
@@ -159,30 +171,40 @@ const plugin: JupyterFrontEndPlugin<void> = {
       execute: () => toggle_licence()
     })
     palette.addItem({ command, category: 'CourseLevels' })
-    app.commands.addKeyBinding({ command, keys: ['Ctrl \\', 'Ctrl L'], selector: '.jp-Notebook' })
-
+    app.commands.addKeyBinding({
+      command,
+      keys: ['Ctrl \\', 'Ctrl L'],
+      selector: '.jp-Notebook'
+    })
 
     command = 'courselevels:metadata-clean-selected'
     app.commands.addCommand(command, {
       label: 'clean metadata for all selected cells',
-      execute: () => apply_on_cells(notebookTracker, Scope.Multiple, clean_cell_metadata)
+      execute: () =>
+        apply_on_cells(notebookTracker, Scope.Multiple, clean_cell_metadata)
     })
     palette.addItem({ command, category: 'courselevels' })
-    app.commands.addKeyBinding({ command, keys: ['Alt Cmd 7'], selector: '.jp-Notebook' })
-
+    app.commands.addKeyBinding({
+      command,
+      keys: ['Alt Cmd 7'],
+      selector: '.jp-Notebook'
+    })
 
     command = 'courselevels:metadata-clean-all'
     app.commands.addCommand(command, {
       label: 'clean metadata for all cells',
-      execute: () => apply_on_cells(notebookTracker, Scope.All, clean_cell_metadata)
+      execute: () =>
+        apply_on_cells(notebookTracker, Scope.All, clean_cell_metadata)
     })
     palette.addItem({ command, category: 'courselevels' })
-    app.commands.addKeyBinding({ command, keys: ['Ctrl Alt 7'], selector: '.jp-Notebook' })
+    app.commands.addKeyBinding({
+      command,
+      keys: ['Ctrl Alt 7'],
+      selector: '.jp-Notebook'
+    })
 
-
-  // the buttons in the toolbar
+    // the buttons in the toolbar
     const create_level_buttons = () => {
-
       const find_spacer = (panel: NotebookPanel): number => {
         let index = 0
         for (const child of panel.toolbar.children()) {
@@ -195,13 +217,19 @@ const plugin: JupyterFrontEndPlugin<void> = {
         return 0
       }
 
-      class BasicButton implements DocumentRegistry.IWidgetExtension<NotebookPanel, INotebookModel> {
-        createNew(panel: NotebookPanel, context: DocumentRegistry.IContext<INotebookModel>): IDisposable {
+      class BasicButton
+        implements
+          DocumentRegistry.IWidgetExtension<NotebookPanel, INotebookModel>
+      {
+        createNew(
+          panel: NotebookPanel,
+          context: DocumentRegistry.IContext<INotebookModel>
+        ): IDisposable {
           const button = new ToolbarButton({
             className: 'courselevels-button',
             iconClass: 'far fa-hand-pointer',
             onClick: () => toggle_level('basic'),
-            tooltip: 'Toggle basic level',
+            tooltip: 'Toggle basic level'
           })
           // compute where to insert it
           const index = find_spacer(panel)
@@ -213,13 +241,19 @@ const plugin: JupyterFrontEndPlugin<void> = {
       }
       app.docRegistry.addWidgetExtension('Notebook', new BasicButton())
 
-      class IntermediateButton implements DocumentRegistry.IWidgetExtension<NotebookPanel, INotebookModel> {
-        createNew(panel: NotebookPanel, context: DocumentRegistry.IContext<INotebookModel>): IDisposable {
+      class IntermediateButton
+        implements
+          DocumentRegistry.IWidgetExtension<NotebookPanel, INotebookModel>
+      {
+        createNew(
+          panel: NotebookPanel,
+          context: DocumentRegistry.IContext<INotebookModel>
+        ): IDisposable {
           const button = new ToolbarButton({
             className: 'courselevels-button',
             iconClass: 'far fa-hand-peace',
             onClick: () => toggle_level('intermediate'),
-            tooltip: 'Toggle intermediate level',
+            tooltip: 'Toggle intermediate level'
           })
           // compute where to insert it
           const index = find_spacer(panel)
@@ -231,13 +265,19 @@ const plugin: JupyterFrontEndPlugin<void> = {
       }
       app.docRegistry.addWidgetExtension('Notebook', new IntermediateButton())
 
-      class AdvancedButton implements DocumentRegistry.IWidgetExtension<NotebookPanel, INotebookModel> {
-        createNew(panel: NotebookPanel, context: DocumentRegistry.IContext<INotebookModel>): IDisposable {
+      class AdvancedButton
+        implements
+          DocumentRegistry.IWidgetExtension<NotebookPanel, INotebookModel>
+      {
+        createNew(
+          panel: NotebookPanel,
+          context: DocumentRegistry.IContext<INotebookModel>
+        ): IDisposable {
           const button = new ToolbarButton({
             className: 'courselevels-button',
             iconClass: 'far fa-hand-spock',
             onClick: () => toggle_level('advanced'),
-            tooltip: 'Toggle advanced level',
+            tooltip: 'Toggle advanced level'
           })
           // compute where to insert it
           const index = find_spacer(panel)
@@ -249,13 +289,19 @@ const plugin: JupyterFrontEndPlugin<void> = {
       }
       app.docRegistry.addWidgetExtension('Notebook', new AdvancedButton())
 
-      class FrameButton implements DocumentRegistry.IWidgetExtension<NotebookPanel, INotebookModel> {
-        createNew(panel: NotebookPanel, context: DocumentRegistry.IContext<INotebookModel>): IDisposable {
+      class FrameButton
+        implements
+          DocumentRegistry.IWidgetExtension<NotebookPanel, INotebookModel>
+      {
+        createNew(
+          panel: NotebookPanel,
+          context: DocumentRegistry.IContext<INotebookModel>
+        ): IDisposable {
           const button = new ToolbarButton({
             className: 'courselevels-button',
             iconClass: 'fas fa-crop-alt',
             onClick: () => toggle_frame(),
-            tooltip: 'Toggle frame around cell',
+            tooltip: 'Toggle frame around cell'
           })
           // compute where to insert it
           const index = find_spacer(panel)
@@ -280,7 +326,7 @@ const plugin: JupyterFrontEndPlugin<void> = {
       ['hint', null],
       ['important', null],
       ['seealso', null],
-      ['warning', null],
+      ['warning', null]
     ]) {
       // need to cast because name is typed as string | null ?!?
       const admonition = name as string
@@ -294,39 +340,44 @@ const plugin: JupyterFrontEndPlugin<void> = {
         label,
         execute: () => {
           const notebook = notebookTracker.currentWidget?.content
-          if (notebook === undefined) { return }
+          if (notebook === undefined) {
+            return
+          }
           toggle_admonition(notebook, admonition)
         }
       })
       palette.addItem({ command, category: 'CourseLevels' })
       if (key !== null) {
-        app.commands.addKeyBinding({ command, keys: ['Ctrl \\', key], selector: '.jp-Notebook' })
+        app.commands.addKeyBinding({
+          command,
+          keys: ['Ctrl \\', key],
+          selector: '.jp-Notebook'
+        })
       }
     }
-
 
     // load settings and create buttons if requested
     function loadSetting(setting: ISettingRegistry.ISettings): void {
       // Read the settings and convert to the correct type
-      show_level_buttons = setting.get('show_level_buttons').composite as boolean
+      show_level_buttons = setting.get('show_level_buttons')
+        .composite as boolean
 
       console.log(
         `jupyterlab-courselevels extension: show_level_buttons is set to ${show_level_buttons}`
       )
       if (show_level_buttons) {
         create_level_buttons()
-     }
+      }
     }
 
     // but do it only after the app has started
-    Promise.all([app.restored, settingRegistry.load(PLUGIN_ID)])
-    .then(([_, setting]) => {
-      loadSetting(setting)
-      setting.changed.connect(loadSetting)
-    })
-
+    Promise.all([app.restored, settingRegistry.load(PLUGIN_ID)]).then(
+      ([_, setting]) => {
+        loadSetting(setting)
+        setting.changed.connect(loadSetting)
+      }
+    )
   }
-
 }
 
 export default plugin
