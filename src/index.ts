@@ -133,7 +133,7 @@ const plugin: JupyterFrontEndPlugin<void> = {
         label: `toggle ${level} level`,
         execute: () => toggle_level(level)
       })
-      palette.addItem({ command, category: 'CourseLevels' })
+      palette.addItem({ command, category: 'courselevels' })
       app.commands.addKeyBinding({
         command,
         keys: ['Ctrl \\', key],
@@ -152,7 +152,7 @@ const plugin: JupyterFrontEndPlugin<void> = {
       label: 'toggle frame',
       execute: () => toggle_frame()
     })
-    palette.addItem({ command, category: 'CourseLevels' })
+    palette.addItem({ command, category: 'courselevels' })
     app.commands.addKeyBinding({
       command,
       keys: ['Ctrl \\', 'Ctrl M'],
@@ -170,7 +170,7 @@ const plugin: JupyterFrontEndPlugin<void> = {
       label: 'toggle licence',
       execute: () => toggle_licence()
     })
-    palette.addItem({ command, category: 'CourseLevels' })
+    palette.addItem({ command, category: 'courselevels' })
     app.commands.addKeyBinding({
       command,
       keys: ['Ctrl \\', 'Ctrl L'],
@@ -346,7 +346,7 @@ const plugin: JupyterFrontEndPlugin<void> = {
           toggle_admonition(notebook, admonition)
         }
       })
-      palette.addItem({ command, category: 'CourseLevels' })
+      palette.addItem({ command, category: 'courselevels' })
       if (key !== null) {
         app.commands.addKeyBinding({
           command,
