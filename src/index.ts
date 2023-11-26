@@ -22,10 +22,8 @@ import { ToolbarButton } from '@jupyterlab/apputils'
 import {
   md_get,
   md_unset,
-  md_has,
-  md_insert,
-  md_remove,
-  md_toggle
+  md_toggle,
+  md_toggle_multi,
 } from 'jupyterlab-celltagsclasses'
 import { Scope, apply_on_cells } from 'jupyterlab-celltagsclasses'
 
@@ -60,6 +58,7 @@ const clean_cell_metadata = (cell: Cell) => {
   }
 }
 
+const ALL_LEVELS = ['basic', 'intermediate', 'advanced']
 const plugin: JupyterFrontEndPlugin<void> = {
   id: PLUGIN_ID,
   autoStart: true,
@@ -79,40 +78,11 @@ const plugin: JupyterFrontEndPlugin<void> = {
 
     let [show_level_buttons] = [false]
 
+    const ALL_FULL_LEVELS = ALL_LEVELS.map((level) => `level_${level}`)
+
     const cell_toggle_level = (cell: Cell, level: string): void => {
-      switch (level) {
-        case 'basic':
-          if (md_has(cell, 'tags', 'level_basic')) {
-            md_remove(cell, 'tags', 'level_basic')
-          } else {
-            md_insert(cell, 'tags', 'level_basic')
-            md_remove(cell, 'tags', 'level_intermediate')
-            md_remove(cell, 'tags', 'level_advanced')
-          }
-          break
-        case 'intermediate':
-          if (md_has(cell, 'tags', 'level_intermediate')) {
-            md_remove(cell, 'tags', 'level_intermediate')
-          } else {
-            md_remove(cell, 'tags', 'level_basic')
-            md_insert(cell, 'tags', 'level_intermediate')
-            md_remove(cell, 'tags', 'level_advanced')
-          }
-          break
-        case 'advanced':
-          if (md_has(cell, 'tags', 'level_advanced')) {
-            md_remove(cell, 'tags', 'level_advanced')
-          } else {
-            md_remove(cell, 'tags', 'level_basic')
-            md_remove(cell, 'tags', 'level_intermediate')
-            md_insert(cell, 'tags', 'level_advanced')
-          }
-          break
-        default:
-          md_remove(cell, 'tags', 'level_basic')
-          md_remove(cell, 'tags', 'level_intermediate')
-          md_remove(cell, 'tags', 'level_advanced')
-      }
+      const full_level = `level_${level}`
+      return md_toggle_multi(cell, 'tags', full_level, ALL_FULL_LEVELS)
     }
 
     const toggle_level = (level: string) => {
