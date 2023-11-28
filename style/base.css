@@ -46,15 +46,4 @@
   & .cell-tag-licence * {
     color: #a0a0a080;
   }
-
-
-  /* hide only the input of cells with the tag 'hide-input' */
-  & .cell-tag-hide-input .jp-Cell-inputWrapper .jp-Cell-inputArea {
-    display: none;
-  }
-
-  & .cell-tag-hide-output .jp-Cell-outputWrapper .jp-Cell-outputArea {
-    display: none;
-  }
-
 }
