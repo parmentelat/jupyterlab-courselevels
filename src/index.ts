@@ -23,7 +23,7 @@ import {
   md_get,
   md_unset,
   md_toggle,
-  md_toggle_multi,
+  md_toggle_multi
 } from 'jupyterlab-celltagsclasses'
 import { Scope, apply_on_cells } from 'jupyterlab-celltagsclasses'
 
@@ -78,7 +78,7 @@ const plugin: JupyterFrontEndPlugin<void> = {
 
     let [show_level_buttons] = [false]
 
-    const ALL_FULL_LEVELS = ALL_LEVELS.map((level) => `level_${level}`)
+    const ALL_FULL_LEVELS = ALL_LEVELS.map(level => `level_${level}`)
 
     const cell_toggle_level = (cell: Cell, level: string): void => {
       const full_level = `level_${level}`
