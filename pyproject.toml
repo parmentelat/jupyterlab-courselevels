@@ -24,6 +24,7 @@ classifiers = [
 dependencies = [
     'jupyterlab-myst',
     'jupyterlab-celltagsclasses',
+    'jupyterlab-hidecell',
 ]
 dynamic = ["version", "description", "authors", "urls", "keywords"]
 
