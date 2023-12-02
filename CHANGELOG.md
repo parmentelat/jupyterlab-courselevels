@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.6.4 2023 Dec 2
+
+- remove rules for hide-input
+- add jupyterlab-hidecell as a dependency instead
+
 ## 0.6.3 2023 Nov 27
 
 - reimplement toggling of courselevels with md_toggle_multi
