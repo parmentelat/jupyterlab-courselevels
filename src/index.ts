@@ -56,7 +56,7 @@ const plugin: JupyterFrontEndPlugin<void> = {
     }
 
     const toggle_level = (level: string) => {
-      apply_on_cells(notebookTracker, Scope.Active, (cell: Cell) => {
+      apply_on_cells(notebookTracker, Scope.Multiple, (cell: Cell) => {
         cell_toggle_level(cell, level)
       })
     }
@@ -82,7 +82,7 @@ const plugin: JupyterFrontEndPlugin<void> = {
     }
 
     const toggle_frame = () => {
-      apply_on_cells(notebookTracker, Scope.Active, (cell: Cell) => {
+      apply_on_cells(notebookTracker, Scope.Multiple, (cell: Cell) => {
         md_toggle(cell, 'tags', 'framed_cell')
       })
     }
