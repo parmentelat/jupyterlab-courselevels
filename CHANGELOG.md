@@ -1,8 +1,10 @@
 # Changelog
 
-## 0.8.0 2024 Apr 29
+## 0.8.1 2024 Apr 29
 
 - admonitions support has moved to jupyterlab-tpt
+- metadata cleanup has moved to jupyterlab-tpt
+- level toggling works on selected cells
 
 ## 0.6.4 2023 Dec 2
 
