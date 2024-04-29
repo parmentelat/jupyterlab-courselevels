@@ -27,8 +27,6 @@ import {
 } from 'jupyterlab-celltagsclasses'
 import { Scope, apply_on_cells } from 'jupyterlab-celltagsclasses'
 
-import { toggle_admonition } from './admonitions'
-
 const PLUGIN_ID = 'jupyterlab-courselevels:plugin'
 
 // md_clean may be broken
@@ -282,48 +280,6 @@ const plugin: JupyterFrontEndPlugin<void> = {
         }
       }
       app.docRegistry.addWidgetExtension('Notebook', new FrameButton())
-    }
-
-    // admonitions
-    for (const [name, key] of [
-      ['admonition', 'Ctrl A'],
-      ['tip', 'Ctrl T'],
-      ['note', 'Ctrl N'],
-      ['attention', null],
-      ['caution', null],
-      ['danger', null],
-      ['error', null],
-      ['hint', null],
-      ['important', null],
-      ['seealso', null],
-      ['warning', null]
-    ]) {
-      // need to cast because name is typed as string | null ?!?
-      const admonition = name as string
-      command = 'courselevels:toggle-admonition'
-      let label = 'toggle admonition'
-      if (admonition !== 'admonition') {
-        command += `-${admonition}`
-        label += ` ${admonition}`
-      }
-      app.commands.addCommand(command, {
-        label,
-        execute: () => {
-          const notebook = notebookTracker.currentWidget?.content
-          if (notebook === undefined) {
-            return
-          }
-          toggle_admonition(notebook, admonition)
-        }
-      })
-      palette.addItem({ command, category: 'courselevels' })
-      if (key !== null) {
-        app.commands.addKeyBinding({
-          command,
-          keys: ['Ctrl \\', key],
-          selector: '.jp-Notebook'
-        })
-      }
     }
 
     // load settings and create buttons if requested

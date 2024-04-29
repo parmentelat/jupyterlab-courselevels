@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.8.0 2024 Apr 29
+
+- admonitions support has moved to jupyterlab-tpt
+
 ## 0.6.4 2023 Dec 2
 
 - remove rules for hide-input

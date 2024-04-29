@@ -12,15 +12,13 @@ JupyterLab extension to
 
 - in addition some cells may show up with a surrounding frame, to emphasize the course structure
 
-- the extension also comes with convenience tools to manage admonitions
-
 ## Important limitation
 
 because of the way MyST markdown is rendered, colors and frames are correctly
 rendered within Jupyter Lab, but they will **not render properly on code cells in
 the jupyter-book output**
 
-For this reason, colors and frames are no longer relevant on markdown cells,
+For this reason, colors and frames are **no longer relevant on markdown cells**,
 and we use admonition instead
 
 ## Requirements
@@ -54,22 +52,6 @@ pip uninstall jupyterlab_courselevels
 |     `courselevels:toggle-licence`      | `Ctrl-\ Ctrl-L` |
 | `courselevels:metadata-clean-selected` |   `Alt-Cmd-7`   | clean metadata on selected cells |
 |   `courselevels:metadata-clean-all`    |  `Ctrl-Alt-7`   | clean metadata on all cells      |
-
-as well as for adding/removing an admonition around a cell
-
-|                command                |   keybinding    |
-| :-----------------------------------: | :-------------: |
-|   `courselevels:toggle-admonition`    | `Ctrl-\ Ctrl-A` |
-| `courselevels:toggle-admonition-tip`  | `Ctrl-\ Ctrl-T` |
-| `courselevels:toggle-admonition-note` | `Ctrl-\ Ctrl-N` |
-|    `courselevels:toggle-attention`    |                 |
-|     `courselevels:toggle-caution`     |                 |
-|     `courselevels:toggle-danger`      |                 |
-|      `courselevels:toggle-error`      |                 |
-|      `courselevels:toggle-hint`       |                 |
-|    `courselevels:toggle-important`    |                 |
-|     `courselevels:toggle-seealso`     |                 |
-|     `courselevels:toggle-warning`     |                 |
 
 ### persistence
 
