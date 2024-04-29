@@ -20,43 +20,15 @@ import { DocumentRegistry } from '@jupyterlab/docregistry'
 import { ToolbarButton } from '@jupyterlab/apputils'
 
 import {
-  md_get,
-  md_unset,
   md_toggle,
-  md_toggle_multi
+  md_toggle_multi,
 } from 'jupyterlab-celltagsclasses'
 import { Scope, apply_on_cells } from 'jupyterlab-celltagsclasses'
 
 const PLUGIN_ID = 'jupyterlab-courselevels:plugin'
 
-// md_clean may be broken
-// import { md_set, , md_insert, md_remove } from 'jupyterlab-celltagsclasses'
-
-const clean_cell_metadata = (cell: Cell) => {
-  console.log('Cleaning metadata for cell', cell)
-  const editable = cell.model.getMetadata('editable')
-  if (editable === true) {
-    md_unset(cell, 'editable')
-  }
-  const tags = cell.model.getMetadata('tags')
-  if (tags?.length === 0) {
-    md_unset(cell, 'tags')
-  }
-  const slide_type = md_get(cell, 'slideshow.slide_type')
-  if (slide_type === '') {
-    md_unset(cell, 'slideshow.slide_type')
-  }
-  const slideshow = md_get(cell, 'slideshow')
-  if (slideshow !== undefined && JSON.stringify(slideshow) === '{}') {
-    md_unset(cell, 'slideshow')
-  }
-  const user_expressions = md_get(cell, 'user_expressions')
-  if (user_expressions?.length === 0) {
-    md_unset(cell, 'user_expressions')
-  }
-}
-
 const ALL_LEVELS = ['basic', 'intermediate', 'advanced']
+
 const plugin: JupyterFrontEndPlugin<void> = {
   id: PLUGIN_ID,
   autoStart: true,
@@ -142,32 +114,6 @@ const plugin: JupyterFrontEndPlugin<void> = {
     app.commands.addKeyBinding({
       command,
       keys: ['Ctrl \\', 'Ctrl L'],
-      selector: '.jp-Notebook'
-    })
-
-    command = 'courselevels:metadata-clean-selected'
-    app.commands.addCommand(command, {
-      label: 'clean metadata for all selected cells',
-      execute: () =>
-        apply_on_cells(notebookTracker, Scope.Multiple, clean_cell_metadata)
-    })
-    palette.addItem({ command, category: 'courselevels' })
-    app.commands.addKeyBinding({
-      command,
-      keys: ['Alt Cmd 7'],
-      selector: '.jp-Notebook'
-    })
-
-    command = 'courselevels:metadata-clean-all'
-    app.commands.addCommand(command, {
-      label: 'clean metadata for all cells',
-      execute: () =>
-        apply_on_cells(notebookTracker, Scope.All, clean_cell_metadata)
-    })
-    palette.addItem({ command, category: 'courselevels' })
-    app.commands.addKeyBinding({
-      command,
-      keys: ['Ctrl Alt 7'],
       selector: '.jp-Notebook'
     })
 
